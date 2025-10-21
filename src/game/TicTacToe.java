@@ -14,7 +14,15 @@ public class TicTacToe {
             for (int j = 0; j < size; j++)
                 board[i][j] = ' ';
     }
-
+    public boolean isFull() {
+        for (int i = 0; i < size; i++)
+            for (int j = 0; j < size; j++)
+                if (board[i][j] == ' ') return false;
+        return true;
+    }
+    public boolean isDraw() {
+        return isFull();
+    }
     public boolean placeMark(int row, int col, char mark) {
         if (row < 0 || row >= size || col < 0 || col >= size) return false;
         if (board[row][col] != ' ') return false;

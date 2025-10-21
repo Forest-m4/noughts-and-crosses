@@ -17,5 +17,17 @@ public class Main {
         System.out.println("Делаем reset...");
         game.reset();
         game.printBoard();
+
+        System.out.println("Заполняем поле для демонстрации ничьи:");
+        int mark = 0;
+        char[] chars = {'X','O'};
+        for (int i=0;i<3;i++) {
+            for (int j=0;j<3;j++) {
+                game.placeMark(i,j,chars[mark%2]);
+                mark++;
+            }
+        }
+        game.printBoard();
+        System.out.println("isDraw = " + game.isDraw());
     }
 }

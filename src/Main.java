@@ -5,37 +5,70 @@ public class Main {
     public static void main(String[] args) {
         TicTacToe game = new TicTacToe(3);
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Демонстрация restart:");
-        game.printBoard();
+        char current = 'X';
 
-        // делаем пару ходов вручную в demo
-        game.placeMark(0,0,'X');
-        game.placeMark(1,1,'O');
-        System.out.println("После нескольких ходов:");
-        game.printBoard();
+        while (true) {
+            System.out.println();
+            game.printBoard();
+            System.out.println("Ход игрока " + current + ". Введите: row col (0-based) или 'r' для рестарта или 'q' для выхода:");
+            String line = scanner.nextLine().trim();
+            if (line.equalsIgnoreCase("q")) {
+                System.out.println("Выход.");
+                break;
+            }
+            if (line.equalsIgnoreCase("r")) {
+                game.reset();
+                current = 'X';
+                continue;
+            }
 
-        System.out.println("Делаем reset...");
-        game.reset();
-        game.printBoard();
+            String[] parts = line.split("\\s+");
+            if (parts.length != 2) {
+                System.out.println("Неверный ввод. Попробуй: 0 2");
+                continue;
+            }
+            try {
+                int row = Integer.parseInt(parts[0]);
+                int col = Integer.parseInt(parts[1]);
+                if (!game.placeMark(row, col, current)) {
+                    System.out.println("Нельзя поставить туда. Попробуй ещё.");
+                    continue;
+                }
+                // проверка победы
+                if (game.isWin(current)) {
+                    game.printBoard();
+                    System.out.println("Игрок " + current + " победил!");
+                    System.out.println("Введите 'r' чтобы рестарт, или 'q' чтобы выйти.");
+                    String cmd = scanner.nextLine().trim();
+                    if (cmd.equalsIgnoreCase("r")) {
+                        game.reset();
+                        current = 'X';
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+                // проверка ничьи
+                if (game.isDraw()) {
+                    game.printBoard();
+                    System.out.println("Ничья!");
+                    System.out.println("Введите 'r' чтобы рестарт, или 'q' чтобы выйти.");
+                    String cmd = scanner.nextLine().trim();
+                    if (cmd.equalsIgnoreCase("r")) {
+                        game.reset();
+                        current = 'X';
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
 
-        System.out.println("Заполняем поле для демонстрации ничьи:");
-        int mark = 0;
-        char[] chars = {'X','O'};
-        for (int i=0;i<3;i++) {
-            for (int j=0;j<3;j++) {
-                game.placeMark(i,j,chars[mark%2]);
-                mark++;
+                // смена игрока
+                current = (current == 'X') ? 'O' : 'X';
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка парсинга. Попробуй ещё.");
             }
         }
-        game.printBoard();
-        System.out.println("isDraw = " + game.isDraw());
-
-        TicTacToe small = new TicTacToe(3);
-        small.placeMark(0,0,'X');
-        small.placeMark(0,1,'X');
-        small.placeMark(0,2,'X');
-        small.printBoard();
-        System.out.println("X победил? " + small.isWin('X'));
-        
+        scanner.close();
     }
 }

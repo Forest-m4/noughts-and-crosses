@@ -21,7 +21,7 @@ public class TicTacToe {
         return true;
     }
     public boolean isDraw() {
-        return isFull();
+        return isFull() && !isWin('X') && !isWin('O');
     }
     public boolean placeMark(int row, int col, char mark) {
         if (row < 0 || row >= size || col < 0 || col >= size) return false;
@@ -47,5 +47,37 @@ public class TicTacToe {
                 System.out.println();
             }
         }
+    }
+    public boolean isWin(char mark) {
+        // строки
+        for (int i = 0; i < size; i++) {
+            boolean win = true;
+            for (int j = 0; j < size; j++) {
+                if (board[i][j] != mark) { win = false; break; }
+            }
+            if (win) return true;
+        }
+        // столбцы
+        for (int j = 0; j < size; j++) {
+            boolean win = true;
+            for (int i = 0; i < size; i++) {
+                if (board[i][j] != mark) { win = false; break; }
+            }
+            if (win) return true;
+        }
+        // диагональ 1
+        boolean win = true;
+        for (int i = 0; i < size; i++) {
+            if (board[i][i] != mark) { win = false; break; }
+        }
+        if (win) return true;
+        // диагональ 2
+        win = true;
+        for (int i = 0; i < size; i++) {
+            if (board[i][size - 1 - i] != mark) { win = false; break; }
+        }
+        if (win) return true;
+
+        return false;
     }
 }

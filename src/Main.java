@@ -29,5 +29,13 @@ public class Main {
         }
         game.printBoard();
         System.out.println("isDraw = " + game.isDraw());
+
+        TicTacToe small = new TicTacToe(3);
+        small.placeMark(0,0,'X');
+        small.placeMark(0,1,'X');
+        small.placeMark(0,2,'X');
+        small.printBoard();
+        System.out.println("X победил? " + small.isWin('X'));
+        
     }
 }
